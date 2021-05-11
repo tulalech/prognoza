@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prognoza</title>
+</head>
+<body>
+<p>
+<form th:object="${cityName}" th:action="@{/city}" method='post'>
+    <table>
+        <p>Podaj miasto (Warsaw, Berlin, Oslo): <input type="text" th:field="*{name}"></p>
+        <p> <input type="submit" value="Sprawdź"/> </p>
+    </table>
+
+        <p th:object="${weatherFact.toString()}" />
+        <td th:text="${weatherFact}" />
+</form>
+
+
+</body>
+</html>

@@ -11,18 +11,20 @@ import org.springframework.web.client.RestTemplate;
 import pl.lech.prognoza.client.WeatherFact;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class WeatherController {
 
-    ArrayList<String> citiesList = new ArrayList<>();
+    List<String> citiesList = new ArrayList<>();
 
     public WeatherController() {
-        citiesList.add(0, "Warsaw");
-        citiesList.add(1, "Berlin");
-        citiesList.add(2, "Oslo");
-        citiesList.add(3, "Paris");
-        citiesList.add(4, "Moscow");
+        citiesList.add("Warsaw");
+        citiesList.add("Berlin");
+        citiesList.add("Oslo");
+        citiesList.add("Paris");
+        citiesList.add("Moscow");
+        citiesList.add("Brasilia");
 
     }
 
@@ -35,18 +37,22 @@ public class WeatherController {
 
     @GetMapping("/city")
     public String createForm(Model model) {
-        model.addAttribute("cities", citiesList);
-        model.addAttribute("cityName", new City());
+//        model.addAttribute("cities", citiesList);
+        model.addAttribute("city", new City());
+        model.addAttribute("noCity", null);
         model.addAttribute("weatherFact", new WeatherFact());
         return "weatherView";
     }
 
     @PostMapping("/city")
-    public String showWeather(Model model, @ModelAttribute City city) {
+    public String showWeather(@ModelAttribute City city, Model model) {
         WeatherFact weatherFact = getWeather(city.getName());
+        if (weatherFact.getLocation() == null) {
+            model.addAttribute("noCity", true);
+        }
         model.addAttribute("weatherFact", weatherFact);
-        model.addAttribute("cities", citiesList);
-        model.addAttribute("cityName", city);
+//        model.addAttribute("cities", citiesList);
+        model.addAttribute("cityName", city.getName());
         return "weatherView";
     }
 

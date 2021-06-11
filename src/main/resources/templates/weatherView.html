@@ -6,14 +6,31 @@
 </head>
 <body>
 <p>
-<form th:object="${cityName}" th:action="@{/city}" method='post'>
-    <table>
-        <p>Podaj miasto (Warsaw, Berlin, Oslo): <input type="text" th:field="*{name}"></p>
-        <p> <input type="submit" value="Sprawdź"/> </p>
-    </table>
+<form th:action="@{/city}" th:object="${city}" method='post'>
+        <td>
+            <input th:type="text" th:field="*{name}"/>
+            <input th:type="submit" value="Check weather"/>
+        </td>
+        <br/>
+        <div>
+            <td th:text="${#execInfo.now.time}"/>
+        </div>
+        <br/>
+        <div th:if="${weatherFact.getCurrent() != null}">
+            <td th:text="${weatherFact.getLocation().getName()}" />
+            <td th:text="${weatherFact.getLocation().getCountry()}" />
+            <td th:text="${weatherFact.getCurrent().getTemperature()}" />
+            <td th:text="${weatherFact.getCurrent().getObservationTime()}" />
+        </div>
+        <br>
+        <div th:if="${weatherFact.getCurrent() != null}">
+            <img th:width="200px" th:src="${weatherFact.getCurrent().getWeatherIcons().get(0)}" />
+        </div>
+    <br/>
+    <div th:if="${noCity != null}">
+        <td th:text="${city.name} + ' not found'" />
+    </div>
 
-        <p th:object="${weatherFact.toString()}" />
-        <td th:text="${weatherFact}" />
 </form>
 
 
